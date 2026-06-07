@@ -6,13 +6,14 @@
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.14-brightgreen)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED)
+![Spring AI](https://img.shields.io/badge/Spring%20AI-1.0.0-green)
 ![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow)
 
 ---
 
 ## 📌 Sobre o Projeto
 
-O **AI Financial Analyst** é uma API REST que permite ao usuário controlar suas finanças pessoais e receber análises e recomendações geradas por Inteligência Artificial.
+O **AI Financial Analyst** é uma API REST que permite ao usuário controlar suas finanças pessoais e receber análises e recomendações geradas por Inteligência Artificial usando Spring AI e LLaMA 3.3.
 
 ---
 
@@ -21,7 +22,8 @@ O **AI Financial Analyst** é uma API REST que permite ao usuário controlar sua
 - Java 21
 - Spring Boot 3.5.14
 - Spring Security + JWT
-- Spring AI
+- Spring AI 1.0.0
+- Groq (LLaMA 3.3 70B)
 - PostgreSQL 16
 - Flyway
 - Docker + Docker Compose
@@ -36,7 +38,7 @@ O projeto segue os princípios da **Clean Architecture**:
 com.aifinancialanalyst
 ├── domain          # Entidades e contratos de negócio
 ├── application     # Casos de uso
-├── infrastructure  # JPA, segurança, integrações
+├── infrastructure  # JPA, segurança, IA, integrações
 ├── presentation    # Controllers e DTOs
 ├── configuration   # Configurações do Spring
 └── shared          # Utilitários transversais
@@ -50,9 +52,8 @@ com.aifinancialanalyst
 - [x] Categorias financeiras (receitas e despesas)
 - [x] Cadastro de transações
 - [x] Dashboard financeiro com saldo e totais
-- [ ] Relatórios por período
-- [ ] Análise de gastos com IA
-- [ ] Recomendações financeiras
+- [x] Análise de gastos com IA (Spring AI + Groq LLaMA 3.3)
+- [ ] Recomendações financeiras personalizadas
 - [ ] Assistente conversacional financeiro
 
 ---
@@ -105,6 +106,11 @@ docker compose up -d
 | Método | Endpoint | Descrição | Auth |
 |--------|----------|-----------|------|
 | GET | `/api/v1/dashboard` | Resumo financeiro | ✅ |
+
+### Análise com IA
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| GET | `/api/v1/ai/analyze` | Análise financeira com IA | ✅ |
 
 ---
 
