@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -24,21 +25,21 @@ public class AIAnalysisController {
     private final AuthenticatedUserService authenticatedUserService;
 
     @GetMapping("/analyze")
-    public ResponseEntity<ApiResponse<String>> analyze(
+    public ResponseEntity<ApiResponse<List<String>>> analyze(
             @AuthenticationPrincipal UserDetails userDetails) {
 
         UUID userId = authenticatedUserService.getAuthenticatedUserId(userDetails);
-        String analysis = analyzeFinancesUseCase.execute(userId);
+        List<String> analysis = analyzeFinancesUseCase.execute(userId);
         return ResponseEntity.ok(ApiResponse.success(analysis));
     }
 
     @PostMapping("/chat")
-    public ResponseEntity<ApiResponse<String>> chat(
+    public ResponseEntity<ApiResponse<List<String>>> chat(
             @Valid @RequestBody ChatRequest request,
             @AuthenticationPrincipal UserDetails userDetails) {
 
         UUID userId = authenticatedUserService.getAuthenticatedUserId(userDetails);
-        String response = chatWithAIUseCase.execute(request.message(), userId);
+        List<String> response = chatWithAIUseCase.execute(request.message(), userId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 }

@@ -1,11 +1,13 @@
-package com.aifinancialanalyst.infrastructure.ai;
+package com.aifinancialanalyst.infrastructure.ia;
 
 import com.aifinancialanalyst.domain.model.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -13,12 +15,12 @@ public class FinancialAIService {
 
     private final ChatClient.Builder chatClientBuilder;
 
-    public String analyzeTransactions(List<Transaction> transactions) {
+    public List<String> analyzeTransactions(List<Transaction> transactions) {
         ChatClient chatClient = chatClientBuilder.build();
 
         StringBuilder transactionData = new StringBuilder();
         transactions.forEach(t -> transactionData.append(
-                String.format("- %s: R$ %.2f (%s) em %s%n",
+                String.format("- %s: R$ %.2f (%s) em %s\n",
                         t.getDescription(),
                         t.getAmount(),
                         t.getType(),
@@ -26,31 +28,44 @@ public class FinancialAIService {
         ));
 
         String prompt = String.format("""
-                Você é um consultor financeiro pessoal especializado.
-                Analise as seguintes transações financeiras e forneça:
-                1. Um resumo do padrão de gastos
-                2. Pontos de atenção
-                3. Recomendações práticas para melhorar a saúde financeira
+                Você é um consultor financeiro pessoal.
+                Analise as transações abaixo e responda EXATAMENTE neste formato, uma informação por linha:
+                
+                RESUMO: [uma frase resumindo o padrão de gastos]
+                ATENÇÃO 1: [ponto de atenção 1]
+                ATENÇÃO 2: [ponto de atenção 2]
+                ATENÇÃO 3: [ponto de atenção 3]
+                RECOMENDAÇÃO 1: [recomendação 1]
+                RECOMENDAÇÃO 2: [recomendação 2]
+                RECOMENDAÇÃO 3: [recomendação 3]
                 
                 Transações:
                 %s
                 
-                Responda em português de forma clara, objetiva e amigável.
-                Máximo 5 parágrafos.
+                Responda em português. Seja direto e objetivo. Não adicione texto extra.
                 """, transactionData);
 
-        return chatClient.prompt()
+        String response = chatClient.prompt()
                 .user(prompt)
                 .call()
                 .content();
+
+        if (response == null || response.isBlank()) {
+            return List.of("Não foi possível gerar a análise.");
+        }
+
+        return Arrays.stream(response.trim().split("\n"))
+                .map(String::trim)
+                .filter(line -> !line.isBlank())
+                .collect(Collectors.toList());
     }
 
-    public String chat(String userMessage, List<Transaction> transactions) {
+    public List<String> chat(String userMessage, List<Transaction> transactions) {
         ChatClient chatClient = chatClientBuilder.build();
 
         StringBuilder transactionData = new StringBuilder();
         transactions.forEach(t -> transactionData.append(
-                String.format("- %s: R$ %.2f (%s) em %s%n",
+                String.format("- %s: R$ %.2f (%s) em %s\n",
                         t.getDescription(),
                         t.getAmount(),
                         t.getType(),
@@ -58,21 +73,29 @@ public class FinancialAIService {
         ));
 
         String prompt = String.format("""
-                Você é um assistente financeiro pessoal especializado.
+                Você é um assistente financeiro pessoal.
                 
-                Contexto financeiro do usuário:
+                Dados financeiros do usuário:
                 %s
                 
-                Pergunta do usuário: %s
+                Pergunta: %s
                 
-                Responda em português de forma clara, objetiva e amigável.
-                Base sua resposta nos dados financeiros fornecidos.
-                Máximo 3 parágrafos.
+                Responda em português. Máximo 3 linhas, uma informação por linha.
+                Não adicione texto extra, apenas as linhas de resposta.
                 """, transactionData, userMessage);
 
-        return chatClient.prompt()
+        String response = chatClient.prompt()
                 .user(prompt)
                 .call()
                 .content();
+
+        if (response == null || response.isBlank()) {
+            return List.of("Não foi possível processar sua pergunta.");
+        }
+
+        return Arrays.stream(response.trim().split("\n"))
+                .map(String::trim)
+                .filter(line -> !line.isBlank())
+                .collect(Collectors.toList());
     }
 }
