@@ -1,9 +1,16 @@
 services:
   postgres:
-    image: 'postgres:latest'
+    image: postgres:16
+    container_name: ai-financial-analyst-db
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      POSTGRES_DB: aifinancialanalyst
+      POSTGRES_USER: aifinancial
+      POSTGRES_PASSWORD: aifinancial123
     ports:
-      - '5432'
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
