@@ -44,4 +44,35 @@ public class FinancialAIService {
                 .call()
                 .content();
     }
+
+    public String chat(String userMessage, List<Transaction> transactions) {
+        ChatClient chatClient = chatClientBuilder.build();
+
+        StringBuilder transactionData = new StringBuilder();
+        transactions.forEach(t -> transactionData.append(
+                String.format("- %s: R$ %.2f (%s) em %s%n",
+                        t.getDescription(),
+                        t.getAmount(),
+                        t.getType(),
+                        t.getDate())
+        ));
+
+        String prompt = String.format("""
+                Você é um assistente financeiro pessoal especializado.
+                
+                Contexto financeiro do usuário:
+                %s
+                
+                Pergunta do usuário: %s
+                
+                Responda em português de forma clara, objetiva e amigável.
+                Base sua resposta nos dados financeiros fornecidos.
+                Máximo 3 parágrafos.
+                """, transactionData, userMessage);
+
+        return chatClient.prompt()
+                .user(prompt)
+                .call()
+                .content();
+    }
 }
