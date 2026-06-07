@@ -9,5 +9,11 @@ server:
 
 logging:
   level:
-    root: INFO
-    com.aifinancialanalyst: DEBUG
+    root: WARN
+    com.aifinancialanalyst: INFO
+    org.springframework.security: ERROR
+    org.hibernate.SQL: ERROR
+    org.hibernate.type.descriptor.sql: ERROR
+    com.zaxxer.hikari: ERROR
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
