@@ -53,8 +53,9 @@ com.aifinancialanalyst
 - [x] Cadastro de transações
 - [x] Dashboard financeiro com saldo e totais
 - [x] Análise de gastos com IA (Spring AI + Groq LLaMA 3.3)
-- [ ] Recomendações financeiras personalizadas
-- [ ] Assistente conversacional financeiro
+- [x] Assistente conversacional financeiro com IA
+- [ ] Testes automatizados
+- [ ] CI/CD com GitHub Actions
 
 ---
 
@@ -107,10 +108,11 @@ docker compose up -d
 |--------|----------|-----------|------|
 | GET | `/api/v1/dashboard` | Resumo financeiro | ✅ |
 
-### Análise com IA
+### Inteligência Artificial
 | Método | Endpoint | Descrição | Auth |
 |--------|----------|-----------|------|
 | GET | `/api/v1/ai/analyze` | Análise financeira com IA | ✅ |
+| POST | `/api/v1/ai/chat` | Assistente conversacional | ✅ |
 
 ---
 
