@@ -33,7 +33,6 @@ O **AI Financial Analyst** é uma API REST que permite ao usuário controlar sua
 ## 🏗️ Arquitetura
 
 O projeto segue os princípios da **Clean Architecture**:
-
 com.aifinancialanalyst
 ├── domain          # Entidades e contratos de negócio
 ├── application     # Casos de uso
@@ -48,10 +47,10 @@ com.aifinancialanalyst
 
 - [x] Cadastro de usuários
 - [x] Autenticação JWT
-- [ ] Cadastro de transações (receitas e despesas)
-- [ ] Categorias financeiras
-- [ ] Dashboard financeiro
-- [ ] Relatórios
+- [x] Categorias financeiras (receitas e despesas)
+- [x] Cadastro de transações
+- [x] Dashboard financeiro com saldo e totais
+- [ ] Relatórios por período
 - [ ] Análise de gastos com IA
 - [ ] Recomendações financeiras
 - [ ] Assistente conversacional financeiro
@@ -85,10 +84,27 @@ docker compose up -d
 ## 📡 Endpoints Disponíveis
 
 ### Autenticação
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| POST | `/api/v1/auth/register` | Cadastro de usuário |
-| POST | `/api/v1/auth/login` | Login |
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| POST | `/api/v1/auth/register` | Cadastro de usuário | ❌ |
+| POST | `/api/v1/auth/login` | Login | ❌ |
+
+### Categorias
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| POST | `/api/v1/categories` | Criar categoria | ✅ |
+| GET | `/api/v1/categories` | Listar categorias | ✅ |
+
+### Transações
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| POST | `/api/v1/transactions` | Criar transação | ✅ |
+| GET | `/api/v1/transactions` | Listar transações | ✅ |
+
+### Dashboard
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| GET | `/api/v1/dashboard` | Resumo financeiro | ✅ |
 
 ---
 
