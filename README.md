@@ -46,17 +46,30 @@ com.aifinancialanalyst
 
 ---
 
+## 🔐 Segurança
+
+- Autenticação JWT com blacklist de tokens
+- BCrypt para criptografia de senhas
+- CORS configurado
+- Rate Limiting nos endpoints de autenticação
+- Logs seguros sem dados sensíveis
+- Auditoria de acesso — todas as ações são registradas
+
+---
+
 ## ✅ Funcionalidades
 
 - [x] Cadastro de usuários
 - [x] Autenticação JWT
-- [x] Categorias financeiras (receitas e despesas)
-- [x] Cadastro de transações
+- [x] Logout com invalidação de token
+- [x] Categorias financeiras — CRUD completo
+- [x] Transações financeiras — CRUD completo
 - [x] Dashboard financeiro com saldo e totais
 - [x] Análise de gastos com IA (Spring AI + Groq LLaMA 3.3)
 - [x] Assistente conversacional financeiro com IA
 - [x] Testes unitários (JUnit 5 + Mockito) — 11 testes
 - [x] CI/CD com GitHub Actions
+- [x] Auditoria de acesso
 
 ---
 
@@ -91,18 +104,23 @@ docker compose up -d
 |--------|----------|-----------|------|
 | POST | `/api/v1/auth/register` | Cadastro de usuário | ❌ |
 | POST | `/api/v1/auth/login` | Login | ❌ |
+| POST | `/api/v1/auth/logout` | Logout | ✅ |
 
 ### Categorias
 | Método | Endpoint | Descrição | Auth |
 |--------|----------|-----------|------|
 | POST | `/api/v1/categories` | Criar categoria | ✅ |
 | GET | `/api/v1/categories` | Listar categorias | ✅ |
+| PUT | `/api/v1/categories/{id}` | Atualizar categoria | ✅ |
+| DELETE | `/api/v1/categories/{id}` | Deletar categoria | ✅ |
 
 ### Transações
 | Método | Endpoint | Descrição | Auth |
 |--------|----------|-----------|------|
 | POST | `/api/v1/transactions` | Criar transação | ✅ |
 | GET | `/api/v1/transactions` | Listar transações | ✅ |
+| PUT | `/api/v1/transactions/{id}` | Atualizar transação | ✅ |
+| DELETE | `/api/v1/transactions/{id}` | Deletar transação | ✅ |
 
 ### Dashboard
 | Método | Endpoint | Descrição | Auth |
