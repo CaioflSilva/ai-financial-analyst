@@ -9,6 +9,7 @@ import com.aifinancialanalyst.infrastructure.security.AuthenticatedUserService;
 import com.aifinancialanalyst.presentation.request.TransactionRequest;
 import com.aifinancialanalyst.presentation.response.TransactionResponse;
 import com.aifinancialanalyst.shared.response.ApiResponse;
+import com.aifinancialanalyst.shared.response.PagedResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -50,15 +50,14 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<TransactionResponse>>> getAll(
+    public ResponseEntity<PagedResponse<TransactionResponse>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
             @AuthenticationPrincipal UserDetails userDetails) {
 
         UUID userId = authenticatedUserService.getAuthenticatedUserId(userDetails);
-        List<TransactionResponse> transactions = getTransactionsUseCase.execute(userId)
-                .stream()
-                .map(TransactionResponse::from)
-                .toList();
-        return ResponseEntity.ok(ApiResponse.success(transactions));
+        PagedResponse<TransactionResponse> response = getTransactionsUseCase.execute(userId, page, size);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")

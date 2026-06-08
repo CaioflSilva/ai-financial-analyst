@@ -9,6 +9,9 @@ import com.aifinancialanalyst.infrastructure.persistence.repository.CategoryJpaR
 import com.aifinancialanalyst.infrastructure.persistence.repository.TransactionJpaRepository;
 import com.aifinancialanalyst.infrastructure.persistence.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -45,6 +48,20 @@ public class TransactionRepositoryAdapter implements TransactionRepository {
                 .stream()
                 .map(this::toDomain)
                 .toList();
+    }
+
+    @Override
+    public List<Transaction> findAllByUserId(UUID userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("date").descending());
+        return jpaRepository.findAllByUserId(userId, pageable)
+                .stream()
+                .map(this::toDomain)
+                .toList();
+    }
+
+    @Override
+    public long countByUserId(UUID userId) {
+        return jpaRepository.countByUserId(userId);
     }
 
     @Override

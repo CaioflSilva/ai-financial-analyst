@@ -11,5 +11,7 @@ public interface TransactionRepository {
     Transaction save(Transaction transaction);
     Optional<Transaction> findById(UUID id);
     List<Transaction> findAllByUserId(UUID userId);
+    List<Transaction> findAllByUserId(UUID userId, int page, int size);
+    long countByUserId(UUID userId);
     void deleteById(UUID id);
 }
