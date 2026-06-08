@@ -13,6 +13,7 @@ public class DeleteCategoryUseCase {
 
     private final CategoryRepository categoryRepository;
 
+    @org.springframework.transaction.annotation.Transactional
     public void execute(UUID id, UUID userId) {
         categoryRepository.findById(id)
                 .filter(category -> category.getUserId().equals(userId))

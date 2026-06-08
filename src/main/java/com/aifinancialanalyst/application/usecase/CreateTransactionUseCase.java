@@ -19,6 +19,7 @@ public class CreateTransactionUseCase {
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
 
+    @org.springframework.transaction.annotation.Transactional
     public Transaction execute(String description, BigDecimal amount,
                                LocalDate date, UUID categoryId, UUID userId) {
 

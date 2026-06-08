@@ -15,6 +15,7 @@ public class CreateUserUseCase {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @org.springframework.transaction.annotation.Transactional
     public User execute(String name, String email, String password) {
         if (userRepository.existsByEmail(email)) {
             throw new BusinessException("Email already in use: " + email);

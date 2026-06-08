@@ -13,6 +13,7 @@ public class DeleteTransactionUseCase {
 
     private final TransactionRepository transactionRepository;
 
+    @org.springframework.transaction.annotation.Transactional
     public void execute(UUID id, UUID userId) {
         transactionRepository.findById(id)
                 .filter(transaction -> transaction.getUserId().equals(userId))

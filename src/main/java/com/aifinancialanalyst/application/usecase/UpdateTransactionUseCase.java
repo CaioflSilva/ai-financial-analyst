@@ -8,6 +8,7 @@ import com.aifinancialanalyst.domain.repository.CategoryRepository;
 import com.aifinancialanalyst.domain.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ public class UpdateTransactionUseCase {
     private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
 
+    @Transactional
     public Transaction execute(UUID id, String description, BigDecimal amount,
                                LocalDate date, UUID categoryId, UUID userId) {
 

@@ -15,6 +15,7 @@ public class UpdateCategoryUseCase {
 
     private final CategoryRepository categoryRepository;
 
+    @org.springframework.transaction.annotation.Transactional
     public Category execute(UUID id, String name, CategoryType type, UUID userId) {
         Category category = categoryRepository.findById(id)
                 .filter(c -> c.getUserId().equals(userId))

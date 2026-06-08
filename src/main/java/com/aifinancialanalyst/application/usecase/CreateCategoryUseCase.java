@@ -14,6 +14,7 @@ public class CreateCategoryUseCase {
 
     private final CategoryRepository categoryRepository;
 
+    @org.springframework.transaction.annotation.Transactional
     public Category execute(String name, CategoryType type, UUID userId) {
         Category category = new Category();
         category.setName(name);
