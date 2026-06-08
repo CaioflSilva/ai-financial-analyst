@@ -54,7 +54,7 @@ com.aifinancialanalyst
 - [x] Dashboard financeiro com saldo e totais
 - [x] Análise de gastos com IA (Spring AI + Groq LLaMA 3.3)
 - [x] Assistente conversacional financeiro com IA
-- [ ] Testes automatizados
+- [x] Testes unitários (JUnit 5 + Mockito) — 11 testes
 - [ ] CI/CD com GitHub Actions
 
 ---
