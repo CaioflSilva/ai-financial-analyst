@@ -7,6 +7,7 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED)
 ![Spring AI](https://img.shields.io/badge/Spring%20AI-1.0.0-green)
+![CI](https://github.com/CaioflSilva/ai-financial-analyst/actions/workflows/ci.yml/badge.svg)
 ![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow)
 
 ---
@@ -55,7 +56,7 @@ com.aifinancialanalyst
 - [x] Análise de gastos com IA (Spring AI + Groq LLaMA 3.3)
 - [x] Assistente conversacional financeiro com IA
 - [x] Testes unitários (JUnit 5 + Mockito) — 11 testes
-- [ ] CI/CD com GitHub Actions
+- [x] CI/CD com GitHub Actions
 
 ---
 
