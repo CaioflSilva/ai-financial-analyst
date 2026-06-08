@@ -1,7 +1,9 @@
 package com.aifinancialanalyst.presentation.controller;
 
 import com.aifinancialanalyst.application.usecase.CreateCategoryUseCase;
+import com.aifinancialanalyst.application.usecase.DeleteCategoryUseCase;
 import com.aifinancialanalyst.application.usecase.GetCategoriesUseCase;
+import com.aifinancialanalyst.application.usecase.UpdateCategoryUseCase;
 import com.aifinancialanalyst.domain.model.Category;
 import com.aifinancialanalyst.infrastructure.security.AuthenticatedUserService;
 import com.aifinancialanalyst.presentation.request.CategoryRequest;
@@ -25,6 +27,8 @@ public class CategoryController {
 
     private final CreateCategoryUseCase createCategoryUseCase;
     private final GetCategoriesUseCase getCategoriesUseCase;
+    private final UpdateCategoryUseCase updateCategoryUseCase;
+    private final DeleteCategoryUseCase deleteCategoryUseCase;
     private final AuthenticatedUserService authenticatedUserService;
 
     @PostMapping
@@ -53,5 +57,31 @@ public class CategoryController {
                 .map(CategoryResponse::from)
                 .toList();
         return ResponseEntity.ok(ApiResponse.success(categories));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<CategoryResponse>> update(
+            @PathVariable UUID id,
+            @Valid @RequestBody CategoryRequest request,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        UUID userId = authenticatedUserService.getAuthenticatedUserId(userDetails);
+        Category category = updateCategoryUseCase.execute(
+                id,
+                request.name(),
+                request.type(),
+                userId
+        );
+        return ResponseEntity.ok(ApiResponse.success(CategoryResponse.from(category)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> delete(
+            @PathVariable UUID id,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        UUID userId = authenticatedUserService.getAuthenticatedUserId(userDetails);
+        deleteCategoryUseCase.execute(id, userId);
+        return ResponseEntity.ok(ApiResponse.success("Category deleted successfully.", null));
     }
 }
