@@ -70,7 +70,9 @@ jobs:
           EOF
 
       - name: Build and test
-        run: ./mvnw clean test
+        run: |
+          chmod +x mvnw
+          ./mvnw clean test
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
